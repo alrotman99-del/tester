@@ -1,0 +1,574 @@
+/* 기본 설정 */
+body { 
+  margin: 0; 
+  font-family: 'Pretendard', system-ui, sans-serif; 
+  background-color: #121212; 
+  color: #e0e0e0;
+  height: 100vh;
+  overflow: hidden; /* 전체 페이지 스크롤은 막고, 내부 영역에서 스크롤 */
+}
+
+/* 전체 레이아웃 구획 */
+.layout { 
+  display: grid; 
+  grid-template-columns: 250px 1fr; 
+  height: 100vh; 
+}
+
+/* --- 좌측 레이아웃 (아바타, 정보, 스탯) --- */
+.portrait { 
+  padding: 20px; 
+  border-right: 2px solid #333; 
+  background-color: #1a1a1a;
+  display: flex;
+  flex-direction: column;
+  gap: 15px;
+
+  min-height: 0;
+}
+
+
+/* 사이드바 스탯 영역만 스크롤 가능 */
+#sidebar-stats {
+  flex: 1;
+  min-height: 0;
+}
+
+/* 하단 메뉴 버튼(사라지는 문제 방지) */
+#side-menu {
+  position: sticky;
+  bottom: 0;
+  padding-top: 10px;
+  background: linear-gradient(180deg, rgba(26,26,26,0) 0%, rgba(26,26,26,1) 30%);
+}
+/* 좌측 레이아웃 다듬기 */
+.info-panel {
+  background: #252525;
+  padding: 10px;
+  border-radius: 4px;
+  text-align: center;
+  margin-bottom: 5px;
+}
+.status-summary { font-size: 0.9em; color: #aaa; margin-bottom: 5px; font-style: italic; }
+.outfit-tag { font-size: 0.85em; color: #4da6ff; font-weight: bold; }
+/* 스탯 섹션 구분선 */
+.stat-divider {
+  height: 1px;
+  background: #333;
+  margin: 10px 0;
+}
+
+/* 플로팅 로그 버튼 */
+#floating-log-btn {
+  position: absolute;
+  right: 30px;
+  bottom: 30px;
+  width: 50px;
+  height: 50px;
+  border-radius: 50%;
+  background: #4da6ff;
+  color: white;
+  border: none;
+  font-size: 20px;
+  cursor: pointer;
+  box-shadow: 0 4px 10px rgba(0,0,0,0.3);
+  z-index: 10;
+}
+
+/* 메뉴 버튼 스타일 */
+.menu-btn {
+  background: #222;
+  color: #e0e0e0;
+  border: 1px solid #444;
+  padding: 10px;
+  cursor: pointer;
+  font-size: 13px;
+  font-weight: bold;
+  text-align: center;
+}
+.menu-btn:hover {
+  background: #333;
+  border-color: #4da6ff;
+}
+
+/* 커스텀 모달(사이드바 메뉴용) */
+.custom-modal {
+  position: fixed;
+  z-index: 3000; /* 클릭 막힘 방지 */
+  left: 0;
+  top: 0;
+  width: 100%;
+  height: 100%;
+  background-color: rgba(0,0,0,0.8);
+  display: none;
+}
+.custom-modal .modal-content {
+  background-color: #1a1a1a;
+  color: white;
+  margin: 5% auto;
+  padding: 20px;
+  border: 1px solid #4da6ff;
+  width: min(520px, 92vw);
+  max-height: 80vh;
+  overflow-y: auto;
+  border-radius: 6px;
+  position: relative;
+  pointer-events: auto;
+}
+.custom-modal .close {
+  position: absolute;
+  right: 15px;
+  top: 10px;
+  cursor: pointer;
+  font-size: 24px;
+  color: #888;
+}
+.custom-modal .close:hover { color: white; }
+
+/* 스탯 컨테이너 정렬 */
+.stat-container label { font-weight: 500; color: #ddd; }
+/* 아바타 영역 */
+.portrait-stack { 
+  position: relative; 
+  width: 100%; 
+  aspect-ratio: 1 / 1; 
+  background: #252525;
+  border: 1px solid #444;
+}
+.portrait-stack img { 
+  position: absolute; 
+  inset: 0; 
+  width: 100%; 
+  height: 100%; 
+  object-fit: contain; 
+}
+
+/* 의상 정보 & 시스템 버튼 */
+#outfit-info { font-size: 0.9em; color: #4da6ff; }
+.system-buttons { gap: 5px; }
+.system-buttons button {  padding: 5px; cursor: pointer; background: #333; color: white; border: 1px solid #555; }
+
+/* 돈/시간/날짜 바 */
+.status-bar {
+  background: #252525;
+  padding: 10px;
+  border-radius: 4px;
+  display: flex;
+  flex-direction: column;
+  gap: 5px;
+  font-weight: bold;
+}
+
+/* 스탯바 디자인 */
+.stat-header{
+  display:flex;
+  align-items:center;
+  justify-content:space-between;
+  margin-bottom:3px;
+}
+
+.stat-val{
+  font-size:0.85em;
+  color:#bbb;
+  min-width:36px;
+  text-align:right;
+}
+
+.stat-container { margin-bottom: 5px; }
+.stat-container label { font-size: 0.85em; display: block; margin-bottom: 3px; }
+.progress-bg { width: 100%; height: 12px; background: #333; border-radius: 6px; overflow: hidden; border: 1px solid #444; }
+.progress-fill { height: 100%; width: 0%; transition: width 0.3s ease; background: #4dff88; }
+
+/* --- 우측 레이아웃 (메인 게임 화면) --- */
+.main,
+.game-main {
+  display: flex;
+  flex-direction: column;
+  padding: 20px;
+  height: 100vh;
+  box-sizing: border-box;
+  min-height: 0;
+}
+/* 메인(스토리) + 우측 로그 사이드바 레이아웃 */
+.main-row {
+  display: flex;
+  gap: 12px;
+  flex: 1;
+  min-height: 0;
+}
+
+.log-sidebar {
+  width: 450px;
+  border: 2px solid #444;
+  background: #000;
+  border-radius: 4px;
+  overflow: hidden;
+  display: none; /* 기본은 숨김(모바일/좁은 화면) */
+  flex-direction: column;
+  min-height: 0;
+}
+
+.log-sidebar-header {
+  padding: 12px;
+  background: #1a1a1a;
+  border-bottom: 2px solid #444;
+  font-weight: 700;
+}
+
+.log-sidebar-body {
+  flex: 1;
+  min-height: 0;
+  overflow-y: auto;
+  padding: 12px;
+  white-space: pre-wrap;
+  color: #bbb;
+}
+
+/* 넓은 화면에서는 우측 사이드바 로그, 플로팅 버튼은 숨김 */
+@media (min-width: 1100px) {
+  .log-sidebar { display: flex; }
+  #floating-log-btn { display: none; }
+}
+
+/* 맵 + 나레이션 통합 프레임 */
+#combined-frame {
+  display: flex;
+  flex-direction: column;
+  border: 2px solid #444;
+  flex: 1;
+  min-height: 0;
+  background: #000;
+  border-radius: 4px;
+  overflow: hidden;
+}
+
+/* 상단 맵 영역: 가로 400px, 세로 200px 이미지 최적화 */
+#map-area {
+  flex: 0 0 240px; /* 여백을 포함한 고정 높이 */
+  background-color: #1a1a1a;
+  border-bottom: 2px solid #444;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 10px 0;
+}
+/* ✅ 내부 개별 스크롤 제거 (중첩 스크롤 방지) */
+#current-text {
+  flex: 0 0 auto;
+  overflow: visible;
+  padding-right: 10px;
+  font-size: 1.1em;
+  color: #fff;
+}
+
+/* 로그 모달 스타일 */
+.modal {
+  display: none;
+  position: fixed;
+  z-index: 100;
+  left: 0; top: 0; width: 100%; height: 100%;
+  background-color: rgba(0,0,0,0.8);
+}
+.modal-content {
+  background-color: #1a1a1a;
+  margin: 10% auto;
+  padding: 20px;
+  border: 1px solid #444;
+  width: 60%;
+  height: 60%;
+  display: flex;
+  flex-direction: column;
+}
+#history-log {
+  flex: 1;
+  overflow-y: auto;
+  background: #000;
+  padding: 10px;
+  margin-bottom: 10px;
+  white-space: pre-wrap;
+  color: #bbb;
+}
+#view-log-btn {
+  margin-top: 10px;
+  padding: 8px;
+  background: #333;
+  color: #4da6ff;
+  border: 1px solid #4da6ff;
+  cursor: pointer;
+}
+#map-display {
+  width: 400px;
+  height: 200px;
+  background-color: #000; /* 이미지 로딩 전 배경색 */
+  border: 1px solid #555;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  overflow: hidden;
+}
+
+#map-display img#minimap-bg {
+  width: 400px;
+  height: 200px;
+  object-fit: contain; /* 이미지 비율 유지 */
+}
+
+
+/* 미니맵/미니캐릭터 레이어 스택 */
+.minimap-stack{
+  position: relative;
+  width: 400px;
+  height: 200px;
+  user-select: none;
+}
+
+/* 미니맵 배경만 전체 크기 */
+.minimap-stack > img{
+  position: absolute;
+  inset: 0;
+  width: 400px;
+  height: 200px;
+  object-fit: contain;
+  pointer-events: none;
+}
+
+/* ✅ 미니캐릭터(드래그 이동) */
+.mini-char{
+  position: absolute;
+  width: 56px;
+  height: 56px;
+  left: 172px; /* JS에서 덮어씀 */
+  top: 100px;  /* JS에서 덮어씀 */
+  cursor: grab;
+  touch-action: none; /* 모바일 드래그 안정화 */
+}
+.mini-char:active{ cursor: grabbing; }
+.mini-char img{
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: contain;
+  pointer-events: none;
+}
+
+/* --- 인벤토리/상점 UI --- */
+.panel{
+  margin-top: 8px;
+  border: 1px solid #2c2c2c;
+  background: #0b0b0b;
+  border-radius: 10px;
+  padding: 12px;
+}
+.panel-header{
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 10px;
+  margin-bottom: 10px;
+}
+.panel-title{
+  font-weight: 800;
+  letter-spacing: 0.2px;
+}
+.panel-sub{
+  color: #888;
+  font-size: 0.9em;
+}
+.pill{
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  padding: 6px 10px;
+  border: 1px solid #2b2b2b;
+  background: #111;
+  border-radius: 999px;
+  font-size: 0.9em;
+  color: #ddd;
+}
+.grid{
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(160px, 1fr));
+  gap: 10px;
+}
+@media (min-width: 980px){
+  .grid{ grid-template-columns: repeat(auto-fill, minmax(170px, 1fr)); }
+}
+.card{
+  border: 1px solid #2b2b2b;
+  background: #101010;
+  border-radius: 12px;
+  overflow: hidden;
+  display: flex;
+  flex-direction: column;
+  min-height: 128px;
+}
+.card-top{
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 10px;
+}
+.thumb{
+  width: 48px;
+  height: 48px;
+  border-radius: 10px;
+  border: 1px solid #2b2b2b;
+  background: #060606;
+  overflow: hidden;
+  flex: 0 0 auto;
+}
+.thumb img{ width: 100%; height: 100%; object-fit: contain; display: block; }
+.thumb.thumb-empty{
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: #666;
+  font-weight: 900;
+  font-size: 18px;
+}
+.meta{ flex: 1; min-width: 0; }
+.meta .name{ font-weight: 800; color: #eee; }
+.meta .desc{ color: #888; font-size: 0.9em; margin-top: 2px; }
+.card-actions{
+  margin-top: auto;
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 8px;
+  padding: 10px;
+  border-top: 1px solid #222;
+  background: #0f0f0f;
+}
+.btn{
+  border: 1px solid #2f2f2f;
+  background: #171717;
+  color: #ddd;
+  border-radius: 10px;
+  padding: 10px;
+  cursor: pointer;
+  font-weight: 700;
+}
+.btn:hover{ border-color: #4da6ff; }
+.btn.primary{
+  background: #2a3b4a;
+  border-color: #4da6ff;
+  color: #eaf4ff;
+}
+.btn:disabled{
+  opacity: 0.45;
+  cursor: not-allowed;
+}
+.tag{
+  display: inline-flex;
+  align-items: center;
+  padding: 3px 8px;
+  border-radius: 999px;
+  border: 1px solid #2b2b2b;
+  background: #121212;
+  color: #aaa;
+  font-size: 0.82em;
+  margin-left: 6px;
+}
+/* 하단 스토리 영역 */
+#story-area {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  padding: 20px;
+  min-height: 0;
+  background-color: #000;
+
+  /* ✅ 메인 전체(텍스트+선택지)를 한 번에 스크롤 */
+  overflow-y: auto;
+}
+
+.log { 
+  flex: 1; 
+  overflow-y: auto; 
+  white-space: pre-wrap; 
+  margin-bottom: 15px; 
+  font-size: 1.1em;
+  line-height: 1.6;
+  color: #bbb;
+}
+
+/* 선택지 영역도 같이 스크롤되게 */
+.choices {
+  border-top: 1px solid #333;
+  padding-top: 15px;
+  padding-bottom: 20px; /* ✅ 마지막 버튼 잘림 방지 */
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+/* 선택지 버튼 스타일 (텍스트 링크 방식) */
+.choice-btn { 
+  background: none; 
+  border: none; 
+  color: #4da6ff; 
+  text-align: left; 
+  cursor: pointer; 
+  font-size: 1em;
+  padding: 5px 0;
+  transition: color 0.2s;
+}
+.choice-btn:hover { color: #80bfff; text-decoration: underline; }
+
+/* --- 시작 화면(메인 영역) --- */
+.start-screen {
+  position: absolute;
+  inset: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: rgba(0,0,0,0.75);
+  z-index: 1500;
+}
+.start-card {
+  width: min(520px, 92vw);
+  border: 1px solid #444;
+  background: #121212;
+  padding: 24px;
+  border-radius: 8px;
+}
+.start-title { margin: 0 0 10px; }
+.start-desc { color: #aaa; margin: 0 0 16px; }
+.start-actions { display: flex; gap: 10px; }
+.start-btn {
+  flex: 1;
+  padding: 12px;
+  border: 1px solid #555;
+  background: #2a2a2a;
+  color: #fff;
+  cursor: pointer;
+}
+.start-btn.primary {
+  background: #4da6ff;
+  border-color: #4da6ff;
+  font-weight: 700;
+}
+.start-btn:disabled { opacity: 0.5; cursor: not-allowed; }
+.start-hint { color: #777; margin: 14px 0 0; font-size: 0.9em; }
+
+/* 빈 슬롯 카드 */
+.card.slot-empty{
+  border-style: dashed;
+  opacity: 0.55;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 6px;
+  padding: 18px 10px;
+  min-height: 120px;
+}
+.slot-plus{
+  font-size: 34px;
+  line-height: 1;
+  color: #4da6ff;
+}
+.slot-label{
+  font-size: 0.9em;
+  color: #aaa;
+}

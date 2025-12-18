@@ -1,0 +1,98 @@
+<!doctype html>
+<html lang="ko">
+<head>
+  <meta charset="utf-8" />
+  <title>텍스트 시뮬레이션</title>
+  <link rel="stylesheet" href="style.css" />
+</head>
+<body>
+  <div class="layout">
+    <aside class="portrait">
+      <div class="portrait-stack">
+        <!-- 포트레이트는 face_* 레이어만 사용 -->
+        <img id="portrait-base" src="images/face_base.png" />
+        <img id="layer-hat" class="layer" />
+        <img id="layer-outfit" class="layer" />
+      </div>
+
+      <div class="status-bar">
+        <div id="stat-money">💰 0</div>
+        <div id="stat-time">🕒 00:00</div>
+        <div id="stat-day">Day 1</div>
+      </div>
+
+      <div class="info-panel">
+        <div id="status-text" class="status-summary">"평범한 하루입니다."</div>
+        <div id="current-outfit" class="outfit-tag">착용: 없음</div>
+      </div>
+
+      <div class="system-buttons" style="display:flex; flex-direction:column; gap:8px;">
+        <button onclick="openInventory()" style="background:#444;color:#fff;">🎒 소지품 가방</button>
+        <div style="display:flex; gap:8px;">
+          <button onclick="saveGame()" style="flex:1;">저장</button>
+          <button onclick="loadGame()" style="flex:1;">불러오기</button>
+        </div>
+      </div>
+    </aside>
+
+    <main class="main">
+      <div class="main-row">
+        <div id="combined-frame">
+          <div id="map-area">
+            <div id="map-display">
+              <div id="minimap" class="minimap-stack" aria-label="minimap">
+                <!-- 배경(맵) -->
+                <img id="minimap-bg" src="images/map_home.png" alt="minimap background"/>
+
+                <!-- ✅ 미니캐릭터(드래그 이동 가능): 바디 베이스 + 장착 레이어 스택 -->
+                <div id="mini-char" class="mini-char" aria-label="mini character" tabindex="0">
+                  <img id="mini-body-base" src="images/body_base.png" alt="mini body base"/>
+                  <img id="mini-body-hat" alt="mini hat"/>
+                  <img id="mini-body-outfit" alt="mini outfit"/>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <div id="story-area">
+            <div id="start-screen" class="start-screen" style="display:none;">
+              <div class="start-card">
+                <h2 class="start-title">텍스트 시뮬레이션</h2>
+                <p class="start-desc">새 게임 또는 불러오기</p>
+                <div class="start-actions">
+                  <button class="start-btn primary" onclick="newGame()">새 게임</button>
+                  <button id="start-load-btn" class="start-btn" onclick="loadGame()">불러오기</button>
+                </div>
+              </div>
+            </div>
+
+            <div id="current-text" class="log"></div>
+            <div id="choices" class="choices"></div>
+          </div>
+        </div>
+
+        <aside id="log-sidebar" class="log-sidebar" aria-label="활동 기록">
+          <div class="log-sidebar-header">활동 기록</div>
+          <div id="sidebar-history" class="log-sidebar-body"></div>
+        </aside>
+      </div>
+
+      <button id="floating-log-btn" onclick="toggleLogModal()">📝</button>
+    </main>
+  </div>
+
+  <div id="log-modal" class="modal">
+    <div class="modal-content">
+      <h3 id="modal-title">활동 기록</h3>
+      <div id="history-log"></div>
+      <button class="modal-close-btn" onclick="toggleLogModal()" style="margin-top:10px; padding:10px; cursor:pointer;">닫기</button>
+    </div>
+  </div>
+
+  <script src="items.js"></script>
+  <script src="world.js"></script>
+  <script src="events.js"></script>
+  <script src="npc.js"></script>
+  <script src="game.js"></script>
+</body>
+</html>
